@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sikyeojoauth.auth.dto.request.ReissueTokenRequest;
-import com.sikyeojoauth.auth.dto.response.ReissueTokensResponse;
-import com.sikyeojoauth.auth.service.AuthService;
+import com.eventorauth.auth.dto.request.ReissueTokenRequest;
+import com.eventorauth.auth.dto.response.ReissueTokensResponse;
+import com.eventorauth.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 

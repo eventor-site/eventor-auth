@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.sikyeojoauth.auth.client.UserInfoClient;
-import com.sikyeojoauth.auth.dto.custom.AppCustomUserDetails;
-import com.sikyeojoauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.client.UserInfoClient;
+import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
+import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 
 import lombok.RequiredArgsConstructor;
 

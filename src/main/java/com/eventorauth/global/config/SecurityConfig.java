@@ -13,12 +13,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.sikyeojoauth.auth.filter.LoginFilter;
-import com.sikyeojoauth.auth.filter.LogoutFilter;
-import com.sikyeojoauth.auth.repository.RefreshTokenRepository;
-import com.sikyeojoauth.auth.service.AppCustomUserDetailsService;
-import com.sikyeojoauth.auth.utils.JwtUtils;
-import com.sikyeojoauth.global.util.CookieUtils;
+import com.eventorauth.auth.filter.LoginFilter;
+import com.eventorauth.auth.filter.LogoutFilter;
+import com.eventorauth.auth.repository.RefreshTokenRepository;
+import com.eventorauth.auth.service.AppCustomUserDetailsService;
+import com.eventorauth.auth.utils.JwtUtils;
+import com.eventorauth.global.util.CookieUtils;
 
 import lombok.RequiredArgsConstructor;
 

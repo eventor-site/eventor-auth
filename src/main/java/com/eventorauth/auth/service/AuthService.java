@@ -5,11 +5,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.sikyeojoauth.auth.dto.entity.RefreshToken;
-import com.sikyeojoauth.auth.dto.request.ReissueTokenRequest;
-import com.sikyeojoauth.auth.dto.response.ReissueTokensResponse;
-import com.sikyeojoauth.auth.repository.RefreshTokenRepository;
-import com.sikyeojoauth.auth.utils.JwtUtils;
+import com.eventorauth.auth.dto.entity.RefreshToken;
+import com.eventorauth.auth.dto.request.ReissueTokenRequest;
+import com.eventorauth.auth.dto.response.ReissueTokensResponse;
+import com.eventorauth.auth.repository.RefreshTokenRepository;
+import com.eventorauth.auth.utils.JwtUtils;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

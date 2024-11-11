@@ -14,11 +14,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.sikyeojoauth.auth.dto.entity.RefreshToken;
-import com.sikyeojoauth.auth.dto.request.LoginRequest;
-import com.sikyeojoauth.auth.dto.response.LoginResponse;
-import com.sikyeojoauth.auth.repository.RefreshTokenRepository;
-import com.sikyeojoauth.auth.utils.JwtUtils;
+import com.eventorauth.auth.dto.entity.RefreshToken;
+import com.eventorauth.auth.dto.request.LoginRequest;
+import com.eventorauth.auth.dto.response.LoginResponse;
+import com.eventorauth.auth.repository.RefreshTokenRepository;
+import com.eventorauth.auth.utils.JwtUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;

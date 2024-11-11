@@ -4,8 +4,8 @@ import java.io.IOException;
 
 import org.springframework.web.filter.GenericFilterBean;
 
-import com.sikyeojoauth.auth.repository.RefreshTokenRepository;
-import com.sikyeojoauth.global.util.CookieUtils;
+import com.eventorauth.auth.repository.RefreshTokenRepository;
+import com.eventorauth.global.util.CookieUtils;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
