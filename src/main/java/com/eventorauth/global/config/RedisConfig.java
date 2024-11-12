@@ -18,7 +18,7 @@ public class RedisConfig {
 	@Bean
 	public RedisConnectionFactory redisConnectionFactory() {
 		RedisStandaloneConfiguration redisStandaloneConfiguration = new RedisStandaloneConfiguration();
-		redisStandaloneConfiguration.setHostName("sikyeojo.shop");
+		redisStandaloneConfiguration.setHostName("eventor.store");
 		redisStandaloneConfiguration.setPort(6379);
 		redisStandaloneConfiguration.setPassword("1q2w3e4r!");
 		redisStandaloneConfiguration.setDatabase(1);
