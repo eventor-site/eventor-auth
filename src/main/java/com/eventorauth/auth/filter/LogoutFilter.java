@@ -50,7 +50,7 @@ public class LogoutFilter extends GenericFilterBean {
 		refreshTokenRepository.deleteById(refreshToken.replace("Bearer+", ""));
 
 		// access, refresh 토큰을 만료시킵니다.
-		Cookie cookie = cookieUtils.expireCookie("Authorization");
+		Cookie cookie = cookieUtils.expireCookie("Access-Token");
 		response.addCookie(cookie);
 
 		cookie = cookieUtils.expireCookie("Refresh-Token");
