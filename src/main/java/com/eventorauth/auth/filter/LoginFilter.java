@@ -60,11 +60,11 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		LoginRequest loginRequest;
 		try {
 			loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
-			String id = loginRequest.id();
+			String identifier = loginRequest.identifier();
 			String password = loginRequest.password();
 
 			UsernamePasswordAuthenticationToken authToken
-				= new UsernamePasswordAuthenticationToken(id, password, null);
+				= new UsernamePasswordAuthenticationToken(identifier, password, null);
 
 			return authenticationManager.authenticate(authToken);
 		} catch (IOException e) {
