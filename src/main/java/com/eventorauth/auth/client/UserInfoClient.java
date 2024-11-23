@@ -9,5 +9,5 @@ import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 @FeignClient(name = "UserInfoService", url = "http://localhost:8083")
 public interface UserInfoClient {
 	@GetMapping("/back/users/info")
-	GetUserTokenInfoResponse getUserInfoById(@RequestHeader("X-User-userId") String id);
+	GetUserTokenInfoResponse getUserTokenInfoByIdentifier(@RequestHeader("X-User-userId") String identifier);
 }

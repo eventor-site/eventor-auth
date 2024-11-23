@@ -28,8 +28,8 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 	 * 외부 서비스에서 사용자 정보를 가져오고, 사용자의 상태에 따라 적절한 {@link UserDetails} 객체를 반환합니다.
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-		GetUserTokenInfoResponse user = userInfoClient.getUserInfoById(id);
+	public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
+		GetUserTokenInfoResponse user = userInfoClient.getUserTokenInfoByIdentifier(identifier);
 
 		if (Objects.isNull(user)) {
 			return null;
