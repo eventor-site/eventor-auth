@@ -7,6 +7,7 @@ import lombok.Builder;
 @Builder
 public record GetUserTokenInfoResponse(
 	Long userId,
+	String identifier,
 	String password,
 	List<String> roles,
 	String statusName
