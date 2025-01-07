@@ -8,6 +8,6 @@ import lombok.Builder;
 public record LoginResponse(
 	String accessToken,
 	String refreshToken,
-	LocalDateTime lastLoginAt
+	LocalDateTime lastLoginTime
 ) {
 }

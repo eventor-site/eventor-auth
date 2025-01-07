@@ -12,13 +12,13 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.LoginRequest;
 import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -90,7 +90,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		LoginResponse loginResponse = LoginResponse.builder()
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
-			.lastLoginAt(LocalDateTime.now())
+			.lastLoginTime(LocalDateTime.now())
 			.build();
 
 		ObjectMapper objectMapper = new ObjectMapper();
