@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.eventorauth.auth.client.UserInfoClient;
 import com.eventorauth.auth.filter.LoginFilter;
 import com.eventorauth.auth.filter.LogoutFilter;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
@@ -31,6 +32,7 @@ public class SecurityConfig {
 	private final JwtUtils jwtUtils;
 	private final AppCustomUserDetailsService userDetailsService;
 	private final RefreshTokenRepository refreshTokenRepository;
+	private final UserInfoClient userInfoClient;
 
 	@Value("${spring.jwt.access-token.expires-in}")
 	private Long accessTokenExpiresIn;
@@ -54,7 +56,8 @@ public class SecurityConfig {
 					jwtUtils,
 					accessTokenExpiresIn,
 					refreshTokenExpiresIn,
-					refreshTokenRepository
+					refreshTokenRepository,
+					userInfoClient
 				),
 				UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new LogoutFilter(cookieUtils, refreshTokenRepository),
