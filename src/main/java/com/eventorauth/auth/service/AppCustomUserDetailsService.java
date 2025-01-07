@@ -14,7 +14,6 @@ import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 import lombok.RequiredArgsConstructor;
 
 /**
- * @author 김태환
  * 사용자 정보를 로드하여 Spring Security 의 {@link UserDetails} 객체를 반환하는 서비스입니다.
  * 사용자 정보를 외부 클라이언트에서 가져와서 {@link UserDetails} 구현체를 반환합니다.
  */
