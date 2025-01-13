@@ -12,6 +12,44 @@ spring:
     refresh-token:
       expires-in: 86400000
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 104873492496-674fvirsotimitme7qhnduo67vd0ppn1.apps.googleusercontent.com
+            client-secret: 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
+            scope: email, profile
+
+          naver:
+            client-id: ejuqElNzORS4on3ES6SH
+            client-secret: tWXeuJkBYi
+            redirect-uri: https://sikyeojo.shop/login/oauth2/code/naver
+            authorization-grant-type: authorization_code
+            client-name: Naver
+            scope: name, email
+
+          kakao:
+            client-id: jgXHTjiAQR
+            redirect-uri: https://sikyeojo.shop/login/oauth2/code/kakao
+            client-authentication-method: POST
+            authorization-grant-type: authorization_code
+            scope: profile_nickname, profile_image, account_email
+            client-name: Kakao
+
+        provider:
+          naver:
+            authorization-uri: https://nid.naver.com/oauth2.0/authorize
+            token-uri: https://nid.naver.com/oauth2.0/token
+            user-info-uri: https://openapi.naver.com/v1/nid/me
+            user-name-attribute: response
+
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
 logging:
   file:
     path: ./logs

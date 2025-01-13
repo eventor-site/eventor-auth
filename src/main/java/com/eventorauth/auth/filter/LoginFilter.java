@@ -117,7 +117,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		String errorMessage = "{\"message\": \"비밀번호가 틀렸습니다\"}";
+		String errorMessage = "{\"message\": \"인증 실패\"}";
 		response.getWriter().write(errorMessage);
 	}
 }

@@ -31,11 +31,11 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 		GetUserTokenInfoResponse user = userInfoClient.getUserTokenInfoByIdentifier(identifier);
 
 		if (Objects.isNull(user)) {
-			return null;
+			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
 		}
 
 		if ("탈퇴".equals(user.statusName())) {
-			return null;
+			throw new UsernameNotFoundException("탈퇴한 사용자입니다.");
 		}
 
 		return new AppCustomUserDetails(user);
