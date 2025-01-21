@@ -1,5 +1,8 @@
 package com.eventorauth.global.config;
 
+import java.util.Collections;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,8 +15,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 
-import com.eventorauth.auth.client.UserInfoClient;
+import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.filter.LoginFilter;
 import com.eventorauth.auth.filter.LogoutFilter;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
@@ -23,8 +27,8 @@ import com.eventorauth.global.util.CookieUtils;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableWebSecurity
 @Configuration
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
 	private final AuthenticationConfiguration authenticationConfiguration;
@@ -32,7 +36,9 @@ public class SecurityConfig {
 	private final JwtUtils jwtUtils;
 	private final AppCustomUserDetailsService userDetailsService;
 	private final RefreshTokenRepository refreshTokenRepository;
-	private final UserInfoClient userInfoClient;
+	private final UserClient userClient;
+	// private final CustomOAuth2UserService customOAuth2UserService;
+	// private final CustomSuccessHandler customSuccessHandler;
 
 	@Value("${spring.jwt.access-token.expires-in}")
 	private Long accessTokenExpiresIn;
@@ -45,11 +51,23 @@ public class SecurityConfig {
 			.csrf(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
-			.authorizeHttpRequests((requests) -> requests
-				.requestMatchers("/auth/login", "/auth/reissue", "/auth/logout").permitAll()
-				.anyRequest().permitAll()
+
+			.authorizeHttpRequests((auth) -> auth
+					.requestMatchers("/**", "/js/**", "/css/**", "/images/**", "/favicon.ico").permitAll()
+				// .anyRequest().authenticated()
 			)
-			// .addFilterBefore(new JwtFilter(jwtUtils), LoginFilter.class)
+
+			//
+			// .oauth2Login((oauth2) -> oauth2
+			//
+			// 	.userInfoEndpoint((userInfoEndpointConfig) -> userInfoEndpointConfig
+			// 		.userService(customOAuth2UserService))
+			// 	.successHandler(customSuccessHandler)
+			//
+			// )
+
+			// .addFilterAfter(new JWTFilter(jwtUtils), OAuth2LoginAuthenticationFilter.class)
+
 			.addFilterAt(
 				new LoginFilter(
 					authenticationManager(authenticationConfiguration),
@@ -57,14 +75,32 @@ public class SecurityConfig {
 					accessTokenExpiresIn,
 					refreshTokenExpiresIn,
 					refreshTokenRepository,
-					userInfoClient
+					userClient
 				),
 				UsernamePasswordAuthenticationFilter.class)
 			.addFilterBefore(new LogoutFilter(cookieUtils, refreshTokenRepository),
 				org.springframework.security.web.authentication.logout.LogoutFilter.class)
-			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.userDetailsService(userDetailsService)
+
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
+			.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
+
+				CorsConfiguration configuration = new CorsConfiguration();
+
+				configuration.setAllowedOrigins(List.of("http://localhost:8090", "https://www.eventor.store"));
+				configuration.setAllowedMethods(Collections.singletonList("*"));
+				configuration.setAllowCredentials(true);
+				configuration.setAllowedHeaders(Collections.singletonList("*"));
+				configuration.setMaxAge(3600L);
+
+				configuration.setExposedHeaders(Collections.singletonList("Set-Cookie"));
+				configuration.setExposedHeaders(Collections.singletonList("Authorization"));
+
+				return configuration;
+			}))
 			.build();
+
 	}
 
 	@Bean

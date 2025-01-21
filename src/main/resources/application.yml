@@ -5,6 +5,10 @@ spring:
   application:
     name: "eventor-auth"
 
+  # 캐시 비활성화
+  thymeleaf:
+    cache: false
+
   jwt:
     secret: ae2d34485b06523251b0cf111013481ef501749742a11b927f92eb7d9a048eec5fd22976673af2d7fd4fe93428d4f3301d60ad10164ffc3cea29743fe5906909
     access-token:
@@ -17,27 +21,37 @@ spring:
       client:
         registration:
           google:
-            client-id: 104873492496-674fvirsotimitme7qhnduo67vd0ppn1.apps.googleusercontent.com
-            client-secret: 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
-            scope: email, profile
+            client-name: google
+            client-id: 14386311208-v95l6fic8p8r27nlfaeu88il5hq2jdbf.apps.googleusercontent.com
+            client-secret: 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
+            redirect-uri: https://www.eventor.store/oauth2/code/google
+            authorization-grant-type: authorization_code
+            scope: email profile
+
 
           naver:
-            client-id: ejuqElNzORS4on3ES6SH
-            client-secret: tWXeuJkBYi
-            redirect-uri: https://sikyeojo.shop/login/oauth2/code/naver
+            client-name: naver
+            client-id: S2Sj8SX9Cr_9ZagO1Vvl
+            client-secret: RoHrflXuBz
             authorization-grant-type: authorization_code
-            client-name: Naver
+            redirect-uri: https://www.eventor.store/oauth2/code/naver
             scope: name, email
 
           kakao:
-            client-id: jgXHTjiAQR
-            redirect-uri: https://sikyeojo.shop/login/oauth2/code/kakao
-            client-authentication-method: POST
+            client-name: kakao
+            client-id: c0d10aff5c1c99bf736b2b156f363f1f
+            redirect-uri: https://www.eventor.store/oauth2/code/kakao
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
-            client-name: Kakao
+            admin-key: 27f796f39a9241c30fb31280ac9893f7
 
         provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://accounts.googleapis.com/oauth2/v3/userinfo
+            user-name-attribute:
+
           naver:
             authorization-uri: https://nid.naver.com/oauth2.0/authorize
             token-uri: https://nid.naver.com/oauth2.0/token
@@ -50,6 +64,7 @@ spring:
             user-info-uri: https://kapi.kakao.com/v2/user/me
             user-name-attribute: id
 
+
 logging:
   file:
     path: ./logs
@@ -57,3 +72,7 @@ logging:
   level:
     com.netflix.discovery: ERROR
     com.netflix.eureka: ERROR
+
+    org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
+

@@ -12,7 +12,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.eventorauth.auth.client.UserInfoClient;
+import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.LoginRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
@@ -38,20 +38,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final Long refreshTokenExpiresIn;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	private final RefreshTokenRepository refreshTokenRepository;
-	private final UserInfoClient userInfoClient;
+	private final UserClient userClient;
 
 	/**
 	 * 생성자입니다. 로그인 필터를 설정합니다.
 	 */
 	public LoginFilter(
 		AuthenticationManager authenticationManager, JwtUtils jwtUtils, Long accessTokenExpiresIn,
-		Long refreshTokenExpiresIn, RefreshTokenRepository refreshTokenRepository, UserInfoClient userInfoClient) {
+		Long refreshTokenExpiresIn, RefreshTokenRepository refreshTokenRepository, UserClient userClient) {
 		this.authenticationManager = authenticationManager;
 		this.jwtUtils = jwtUtils;
 		this.accessTokenExpiresIn = accessTokenExpiresIn;
 		this.refreshTokenExpiresIn = refreshTokenExpiresIn;
 		this.refreshTokenRepository = refreshTokenRepository;
-		this.userInfoClient = userInfoClient;
+		this.userClient = userClient;
 		setFilterProcessesUrl("/auth/login");
 	}
 
@@ -91,7 +91,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		refreshTokenRepository.save(
 			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
-		userInfoClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
+		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 
 		LoginResponse loginResponse = LoginResponse.builder()
 			.accessToken(accessToken)

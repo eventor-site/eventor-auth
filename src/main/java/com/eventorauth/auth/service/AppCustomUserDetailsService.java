@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.eventorauth.auth.client.UserInfoClient;
+import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
 import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class AppCustomUserDetailsService implements UserDetailsService {
-	private final UserInfoClient userInfoClient;
+	private final UserClient userClient;
 
 	/**
 	 * 사용자 아이디를 기반으로 {@link UserDetails}를 로드합니다.
@@ -28,7 +28,7 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-		GetUserTokenInfoResponse user = userInfoClient.getUserTokenInfoByIdentifier(identifier);
+		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByIdentifier(identifier);
 
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
