@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 public class UserProfile {
 	private final String oauthId;
+	private final String oauthType;
 	private final String email;
 	private final String name;
 	private final String birth;
@@ -13,8 +14,10 @@ public class UserProfile {
 	private final String phone;
 
 	@Builder
-	public UserProfile(String oauthId, String email, String name, String birth, String gender, String phone) {
+	public UserProfile(String oauthId, String oauthType, String email, String name, String birth, String gender,
+		String phone) {
 		this.oauthId = oauthId;
+		this.oauthType = oauthType;
 		this.email = email;
 		this.name = name;
 		this.birth = birth;

@@ -40,7 +40,7 @@ public class OauthController {
 
 		} else if (getOauth2Response != null) {
 			// 아이디는 있는데 연동 안된 경우 oauthId 값 추가 후 로그인
-			Oauth2Dto oauth2Dto = new Oauth2Dto(request.identifier(), request.oauthId());
+			Oauth2Dto oauth2Dto = new Oauth2Dto(request.identifier(), request.oauthId(), request.oauthType());
 			oauthService.oauthConnection(oauth2Dto);
 			oauthService.oauthLogin(request.identifier(), response);
 		} else {

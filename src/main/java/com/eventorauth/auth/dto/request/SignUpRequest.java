@@ -16,17 +16,20 @@ public record SignUpRequest(
 	String birth,
 	String gender,
 	String phone,
-	String oauthId) {
+	String oauthId,
+	String oauthType
+) {
 	public static SignUpRequest fromUserProfile(UserProfile userProfile) {
 		return SignUpRequest.builder()
-			.oauthId(userProfile.getOauthId())
 			.identifier(userProfile.getEmail())
 			.password(UUID.randomUUID().toString())
 			.name(userProfile.getName())
 			.email(userProfile.getEmail())
-			.birth(userProfile.getBirth())
-			.gender(userProfile.getGender())
-			.phone(userProfile.getPhone())
+			// .birth(userProfile.getBirth())
+			// .gender(userProfile.getGender())
+			// .phone(userProfile.getPhone())
+			.oauthId(userProfile.getOauthId())
+			.oauthType(userProfile.getOauthType())
 			.build();
 	}
 }

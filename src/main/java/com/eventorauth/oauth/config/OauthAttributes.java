@@ -20,6 +20,7 @@ public enum OauthAttributes {
 
 			return UserProfile.builder()
 				.oauthId((String)attributes.get("id"))
+				.oauthType("kakao")
 				.email((String)response.get("email"))
 				.name((String)response.get("name"))
 				.birth(birth)
@@ -42,6 +43,7 @@ public enum OauthAttributes {
 
 			return UserProfile.builder()
 				.oauthId((String)response.get("id"))
+				.oauthType("naver")
 				.email((String)response.get("email"))
 				.name((String)response.get("name"))
 				.birth(birth)
@@ -55,6 +57,7 @@ public enum OauthAttributes {
 		public UserProfile of(Map<String, Object> attributes) {
 			return UserProfile.builder()
 				.oauthId(String.valueOf(attributes.get("sub")))
+				.oauthType("google")
 				.email((String)attributes.get("email"))
 				.name((String)attributes.get("name"))
 				.build();
@@ -65,6 +68,7 @@ public enum OauthAttributes {
 		public UserProfile of(Map<String, Object> attributes) {
 			return UserProfile.builder()
 				.oauthId(String.valueOf(attributes.get("id")))
+				.oauthType("github")
 				.email((String)attributes.get("email"))
 				.name((String)attributes.get("name"))
 				.build();

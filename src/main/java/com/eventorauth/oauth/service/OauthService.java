@@ -114,8 +114,6 @@ public class OauthService {
 			OauthTokenResponse tokenResponse = googleTokenClient.getToken(provider.getAuthorizationGrantType(),
 				provider.getClientId(), provider.getClientSecret(), code, provider.getRedirectUri());
 
-			Map<String, Object> test = getUserAttributes(registrationId, tokenResponse);
-
 			UserProfile userProfile = OauthAttributes.extract(provider.getClientName(),
 				getUserAttributes(registrationId, tokenResponse));
 			return SignUpRequest.fromUserProfile(userProfile);
