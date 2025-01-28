@@ -13,7 +13,7 @@ import com.eventorauth.auth.dto.request.CheckNicknameRequest;
 import com.eventorauth.auth.dto.request.SignUpRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
 import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
-import com.eventorauth.oauth.dto.Oauth2Dto;
+import com.eventorauth.oauth.dto.OauthDto;
 
 @FeignClient(name = "user-client", url = "http://localhost:8083/back/users")
 public interface UserClient {
@@ -21,17 +21,17 @@ public interface UserClient {
 	@GetMapping("/info")
 	GetUserTokenInfoResponse getUserTokenInfoByIdentifier(@RequestParam String identifier);
 
+	@PostMapping("/oauth2/info")
+	GetUserTokenInfoResponse getUserTokenInfoByOauth(@RequestBody OauthDto request);
+
 	@PostMapping("/signup")
 	ResponseEntity<Void> oauthSignup(@RequestBody SignUpRequest request);
 
 	@PostMapping("/signup/checkIdentifier")
 	ResponseEntity<String> checkIdentifier(@RequestBody CheckIdentifierRequest request);
 
-	@GetMapping("/signup/oauth2/identifier")
-	ResponseEntity<Oauth2Dto> getOauth2ByIdentifier(@RequestParam String identifier);
-
-	@PostMapping("/signup/oauth2/connection")
-	ResponseEntity<Oauth2Dto> oauth2Connection(@RequestBody Oauth2Dto dto);
+	@PostMapping("/signup/oauth2/exists")
+	ResponseEntity<Boolean> existsByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/signup/checkNickname")
 	ResponseEntity<String> checkNickname(@RequestBody CheckNicknameRequest request);

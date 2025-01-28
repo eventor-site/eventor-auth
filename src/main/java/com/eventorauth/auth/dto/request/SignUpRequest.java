@@ -1,7 +1,5 @@
 package com.eventorauth.auth.dto.request;
 
-import java.util.UUID;
-
 import com.eventorauth.oauth.dto.UserProfile;
 
 import lombok.Builder;
@@ -21,15 +19,15 @@ public record SignUpRequest(
 ) {
 	public static SignUpRequest fromUserProfile(UserProfile userProfile) {
 		return SignUpRequest.builder()
-			.identifier(userProfile.getEmail())
-			.password(UUID.randomUUID().toString())
-			.name(userProfile.getName())
-			.email(userProfile.getEmail())
+			// .identifier(userProfile.getEmail())
+			// .password(UUID.randomUUID().toString())
+			// .name(userProfile.getName())
+			.email(userProfile.email())
 			// .birth(userProfile.getBirth())
 			// .gender(userProfile.getGender())
 			// .phone(userProfile.getPhone())
-			.oauthId(userProfile.getOauthId())
-			.oauthType(userProfile.getOauthType())
+			.oauthId(userProfile.oauthId())
+			.oauthType(userProfile.oauthType())
 			.build();
 	}
 }

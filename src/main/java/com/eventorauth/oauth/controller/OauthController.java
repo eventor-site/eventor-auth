@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eventorauth.auth.dto.request.SignUpRequest;
-import com.eventorauth.oauth.dto.Oauth2Dto;
+import com.eventorauth.oauth.dto.OauthDto;
 import com.eventorauth.oauth.service.OauthService;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,18 +31,13 @@ public class OauthController {
 	@GetMapping("/oauth2/code/{registrationId}")
 	public String getToken(@PathVariable String registrationId, @RequestParam String code,
 		RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
+
 		SignUpRequest request = oauthService.getToken(registrationId, code);
-		Oauth2Dto getOauth2Response = oauthService.getOauth2ByIdentifier(request.identifier());
+		OauthDto oauthDto = new OauthDto(request.oauthId(), request.oauthType());
+		boolean existsByOauth = oauthService.existsByOauth(oauthDto);
 
-		if (getOauth2Response != null && getOauth2Response.oauthId() != null) {
-			// 아이디도 있고 연동도 된경우 바로 로그인
-			oauthService.oauthLogin(request.identifier(), response);
-
-		} else if (getOauth2Response != null) {
-			// 아이디는 있는데 연동 안된 경우 oauthId 값 추가 후 로그인
-			Oauth2Dto oauth2Dto = new Oauth2Dto(request.identifier(), request.oauthId(), request.oauthType());
-			oauthService.oauthConnection(oauth2Dto);
-			oauthService.oauthLogin(request.identifier(), response);
+		if (existsByOauth) {
+			oauthService.oauthLogin(oauthDto, response);
 		} else {
 			// 이메일로 회원 가입된 아이디가 없는 경우
 			redirectAttributes.addFlashAttribute("request", request);
@@ -57,7 +52,7 @@ public class OauthController {
 	public void oauthLogin(@ModelAttribute SignUpRequest request,
 		HttpServletResponse response) throws IOException {
 		oauthService.oauthSignup(request);
-		oauthService.oauthLogin(request.identifier(), response);
+		oauthService.oauthLogin(new OauthDto(request.oauthId(), request.oauthType()), response);
 	}
 
 }

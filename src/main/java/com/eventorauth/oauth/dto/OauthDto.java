@@ -3,8 +3,7 @@ package com.eventorauth.oauth.dto;
 import lombok.Builder;
 
 @Builder
-public record Oauth2Dto(
-	String identifier,
+public record OauthDto(
 	String oauthId,
 	String oauthType
 ) {

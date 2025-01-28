@@ -30,7 +30,7 @@ import com.eventorauth.oauth.client.NaverProfileClient;
 import com.eventorauth.oauth.client.NaverTokenClient;
 import com.eventorauth.oauth.config.OauthAttributes;
 import com.eventorauth.oauth.config.OauthProvider;
-import com.eventorauth.oauth.dto.Oauth2Dto;
+import com.eventorauth.oauth.dto.OauthDto;
 import com.eventorauth.oauth.dto.OauthTokenResponse;
 import com.eventorauth.oauth.dto.UserProfile;
 import com.eventorauth.oauth.repository.InMemoryOauthRepository;
@@ -159,20 +159,16 @@ public class OauthService {
 		}
 	}
 
-	public Oauth2Dto getOauth2ByIdentifier(String identifier) {
-		return userClient.getOauth2ByIdentifier(identifier).getBody();
-	}
-
-	public void oauthConnection(Oauth2Dto dto) {
-		userClient.oauth2Connection(dto);
+	public Boolean existsByOauth(OauthDto request) {
+		return userClient.existsByOauth(request).getBody();
 	}
 
 	public void oauthSignup(SignUpRequest request) {
 		userClient.oauthSignup(request);
 	}
 
-	public void oauthLogin(String identifier, HttpServletResponse response) throws IOException {
-		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByIdentifier(identifier);
+	public void oauthLogin(OauthDto request, HttpServletResponse response) throws IOException {
+		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request);
 
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
