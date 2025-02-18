@@ -8,3 +8,5 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
 
+feignClient:
+  url: localhost:8090

@@ -15,19 +15,19 @@ import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
 import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 import com.eventorauth.oauth.dto.OauthDto;
 
-@FeignClient(name = "user-client", url = "http://localhost:8083/back/users")
+@FeignClient(name = "user-client", url = "${feignClient.url}")
 public interface UserClient {
 
-	@GetMapping("/info")
+	@GetMapping("/back/users/info")
 	GetUserTokenInfoResponse getUserTokenInfoByIdentifier(@RequestParam String identifier);
 
-	@PostMapping("/oauth2/info")
+	@PostMapping("/back/users/oauth2/info")
 	GetUserTokenInfoResponse getUserTokenInfoByOauth(@RequestBody OauthDto request);
 
-	@PostMapping("/signup")
+	@PostMapping("/back/users/signup")
 	ResponseEntity<Void> oauthSignup(@RequestBody SignUpRequest request);
 
-	@PostMapping("/signup/checkIdentifier")
+	@PostMapping("/back/users/signup/checkIdentifier")
 	ResponseEntity<String> checkIdentifier(@RequestBody CheckIdentifierRequest request);
 
 	@PostMapping("/signup/oauth2/exists")
