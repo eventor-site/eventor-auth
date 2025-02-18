@@ -30,12 +30,12 @@ public interface UserClient {
 	@PostMapping("/back/users/signup/checkIdentifier")
 	ResponseEntity<String> checkIdentifier(@RequestBody CheckIdentifierRequest request);
 
-	@PostMapping("/signup/oauth2/exists")
+	@PostMapping("/back/signup/oauth2/exists")
 	ResponseEntity<Boolean> existsByOauth(@RequestBody OauthDto request);
 
-	@PostMapping("/signup/checkNickname")
+	@PostMapping("/back/signup/checkNickname")
 	ResponseEntity<String> checkNickname(@RequestBody CheckNicknameRequest request);
 
-	@PutMapping("/me/lastLoginTime")
+	@PutMapping("/back/me/lastLoginTime")
 	ResponseEntity<Void> updateLastLoginTime(UpdateLastLoginTimeRequest request);
 }
