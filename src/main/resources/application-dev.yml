@@ -7,10 +7,10 @@ spring:
     redis:
       host: localhost
 
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.web: DEBUG
+#logging:
+#  level:
+#    org.springframework.security: DEBUG
+#    org.springframework.web: DEBUG
 
 eureka:
   client:
