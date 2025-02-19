@@ -12,5 +12,14 @@ logging:
     org.springframework.security: DEBUG
     org.springframework.web: DEBUG
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://root:1q2w3e4r!@localhost:8761/eureka
+  instance:
+    prefer-ip-address: true
+
+
 feignClient:
   url: localhost:8090
+
