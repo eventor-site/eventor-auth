@@ -12,7 +12,9 @@ import com.eventorauth.auth.dto.response.ReissueTokensResponse;
 import com.eventorauth.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -27,11 +29,13 @@ public class AuthController {
 		@RequestBody ReissueTokenRequest request) {
 		ReissueTokensResponse reissuedTokens = authService.reissueTokens(request);
 
+		log.info("재발급 토큰 Access-Token: {} Refresh-Token: {}", reissuedTokens.accessToken(),
+			reissuedTokens.refreshToken());
 		if (reissuedTokens == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 
-		return ResponseEntity.status(HttpStatus.CREATED).body(reissuedTokens);
+		return ResponseEntity.status(HttpStatus.OK).body(reissuedTokens);
 	}
 
 }
