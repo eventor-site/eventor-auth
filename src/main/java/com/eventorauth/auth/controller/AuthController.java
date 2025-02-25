@@ -7,8 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.eventorauth.auth.dto.request.ReissueTokenRequest;
-import com.eventorauth.auth.dto.response.ReissueTokensResponse;
+import com.eventorauth.auth.dto.ReissueTokenDto;
 import com.eventorauth.auth.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,14 +23,15 @@ public class AuthController {
 	/**
 	 * 토큰 재발급
 	 */
-	@PostMapping("/reissue-token")
-	public ResponseEntity<ReissueTokensResponse> reissueTokens(
-		@RequestBody ReissueTokenRequest request) {
-		ReissueTokensResponse reissuedTokens = authService.reissueTokens(request);
+	@PostMapping("/reissue")
+	public ResponseEntity<ReissueTokenDto> reissueTokens(
+		@RequestBody ReissueTokenDto request) {
+		ReissueTokenDto reissuedTokens = authService.reissueTokens(request);
 
 		log.info("재발급 토큰 Access-Token: {} Refresh-Token: {}", reissuedTokens.accessToken(),
 			reissuedTokens.refreshToken());
-		if (reissuedTokens == null) {
+
+		if (reissuedTokens.refreshToken() == null) {
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
 		}
 

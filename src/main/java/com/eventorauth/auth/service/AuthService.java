@@ -5,9 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.eventorauth.auth.dto.ReissueTokenDto;
 import com.eventorauth.auth.dto.entity.RefreshToken;
-import com.eventorauth.auth.dto.request.ReissueTokenRequest;
-import com.eventorauth.auth.dto.response.ReissueTokensResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 
@@ -38,7 +37,7 @@ public class AuthService {
 	 * 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.
 	 * 리프레시 토큰이 유효하지 않거나 Redis 에서 해당 토큰이 존재하지 않으면 null 을 반환합니다.
 	 */
-	public ReissueTokensResponse reissueTokens(ReissueTokenRequest request) {
+	public ReissueTokenDto reissueTokens(ReissueTokenDto request) {
 		String refreshToken = request.refreshToken();
 
 		if (refreshToken == null || jwtUtils.validateToken(refreshToken) != null) {
@@ -64,7 +63,7 @@ public class AuthService {
 		refreshTokenRepository.save(
 			new RefreshToken(newRefreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
-		return ReissueTokensResponse.builder()
+		return ReissueTokenDto.builder()
 			.accessToken(newAccessToken)
 			.refreshToken(newRefreshToken)
 			.build();
