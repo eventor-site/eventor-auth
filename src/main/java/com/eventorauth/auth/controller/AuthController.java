@@ -24,18 +24,8 @@ public class AuthController {
 	 * 토큰 재발급
 	 */
 	@PostMapping("/reissue")
-	public ResponseEntity<ReissueTokenDto> reissueTokens(
-		@RequestBody ReissueTokenDto request) {
-		ReissueTokenDto reissuedTokens = authService.reissueTokens(request);
-
-		log.info("재발급 토큰 Access-Token: {} Refresh-Token: {}", reissuedTokens.accessToken(),
-			reissuedTokens.refreshToken());
-
-		if (reissuedTokens.refreshToken() == null) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-		}
-
-		return ResponseEntity.status(HttpStatus.OK).body(reissuedTokens);
+	public ResponseEntity<ReissueTokenDto> reissueTokens(@RequestBody ReissueTokenDto request) {
+		return ResponseEntity.status(HttpStatus.OK).body(authService.reissueToken(request));
 	}
 
 }

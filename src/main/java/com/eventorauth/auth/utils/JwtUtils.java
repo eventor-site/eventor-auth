@@ -10,6 +10,8 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import com.eventorauth.auth.exception.TokenValidationException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -71,7 +73,7 @@ public class JwtUtils {
 	/**
 	 * JWT 토큰의 유효성을 검증합니다.
 	 */
-	public String validateToken(String token) {
+	public void validateToken(String token) {
 		String errorMessage = null;
 		try {
 			Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token.replace("Bearer+", ""));
@@ -88,7 +90,14 @@ public class JwtUtils {
 			errorMessage = "토큰 값이 비어있습니다.";
 			log.info(errorMessage, e);
 		}
-		return errorMessage;
+
+		if ("refresh".equals(getTokenTypeFromToken(token))) {
+			errorMessage = "Refresh 토큰이 아닙니다.";
+		}
+		if (errorMessage != null) {
+			throw new TokenValidationException(errorMessage);
+		}
+
 	}
 
 	/**
@@ -112,48 +121,6 @@ public class JwtUtils {
 			.claim("token-type", "refresh")
 			.issuedAt(new Date(System.currentTimeMillis()))
 			.expiration(new Date(System.currentTimeMillis() + effectiveTime))
-			.signWith(secretKey)
-			.compact();
-	}
-
-	public String getUsername(String token) {
-
-		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.get("username", String.class);
-	}
-
-	public String getRole(String token) {
-
-		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.get("role", String.class);
-	}
-
-	public Boolean isExpired(String token) {
-
-		return Jwts.parser()
-			.verifyWith(secretKey)
-			.build()
-			.parseSignedClaims(token)
-			.getPayload()
-			.getExpiration()
-			.before(new Date());
-	}
-
-	public String createJwt(String username, String role, Long expiredMs) {
-
-		return Jwts.builder()
-			.claim("username", username)
-			.claim("role", role)
-			.issuedAt(new Date(System.currentTimeMillis()))
-			.expiration(new Date(System.currentTimeMillis() + expiredMs))
 			.signWith(secretKey)
 			.compact();
 	}

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.eventorauth.auth.dto.ReissueTokenDto;
 import com.eventorauth.auth.dto.entity.RefreshToken;
+import com.eventorauth.auth.exception.RefreshTokenNotFoundException;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 
@@ -37,29 +38,23 @@ public class AuthService {
 	 * 리프레시 토큰을 사용하여 새로운 액세스 토큰과 리프레시 토큰을 발급합니다.
 	 * 리프레시 토큰이 유효하지 않거나 Redis 에서 해당 토큰이 존재하지 않으면 null 을 반환합니다.
 	 */
-	public ReissueTokenDto reissueTokens(ReissueTokenDto request) {
-		String refreshToken = request.refreshToken();
+	public ReissueTokenDto reissueToken(ReissueTokenDto request) {
 
-		if (refreshToken == null || jwtUtils.validateToken(refreshToken) != null) {
-			return null;
-		}
+		// 토큰 검증
+		jwtUtils.validateToken(request.refreshToken());
 
-		String tokenType = jwtUtils.getTokenTypeFromToken(refreshToken);
-
-		// refresh 토큰이 아님 or redis 에 refresh 토큰이 존재하지 않음
-		if (!"refresh".equals(tokenType) || !refreshTokenRepository.existsById(refreshToken)) {
-			return null;
-		}
-
-		Long userId = refreshTokenRepository.findById(refreshToken).get().getUserId();
-		List<String> roles = refreshTokenRepository.findById(refreshToken)
-			.map(token -> token.getRoles() != null ? token.getRoles() : List.<String>of())
-			.orElse(List.of());
+		RefreshToken refreshToken = refreshTokenRepository.findById(request.refreshToken()).orElseThrow(
+			RefreshTokenNotFoundException::new);
+		Long userId = refreshToken.getUserId();
+		List<String> roles = refreshToken.getRoles();
 
 		String newAccessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
 		String newRefreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
 
-		refreshTokenRepository.deleteById(refreshToken);
+		// 기존 재발급 토큰 삭제
+		refreshTokenRepository.deleteById(request.refreshToken());
+
+		// 새로 발급한 재발급 토큰 저장
 		refreshTokenRepository.save(
 			new RefreshToken(newRefreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
