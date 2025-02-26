@@ -91,7 +91,7 @@ public class JwtUtils {
 			log.info(errorMessage, e);
 		}
 
-		if ("refresh".equals(getTokenTypeFromToken(token))) {
+		if (!getTokenTypeFromToken(token).equals("refresh")) {
 			errorMessage = "Refresh 토큰이 아닙니다.";
 		}
 		if (errorMessage != null) {
