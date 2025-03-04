@@ -67,9 +67,7 @@ public class OauthService {
 		OauthProvider oauthClient = inMemoryProviderRepository.findByProviderName(registrationId);
 
 		// Redirect URL 생성
-		String url = buildRedirectUrl(registrationId, oauthClient);
-		return String.format("redirect:%s", url);
-
+		return buildRedirectUrl(registrationId, oauthClient);
 	}
 
 	private String buildRedirectUrl(String registrationId, OauthProvider oauthClient) {
