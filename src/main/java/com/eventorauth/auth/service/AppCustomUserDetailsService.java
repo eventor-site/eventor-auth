@@ -28,7 +28,7 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByIdentifier(identifier);
+		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByIdentifier(identifier).getData();
 
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");

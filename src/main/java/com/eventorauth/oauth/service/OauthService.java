@@ -31,6 +31,7 @@ import com.eventorauth.oauth.client.NaverTokenClient;
 import com.eventorauth.oauth.config.OauthAttributes;
 import com.eventorauth.oauth.config.OauthProvider;
 import com.eventorauth.oauth.dto.OauthDto;
+import com.eventorauth.oauth.dto.OauthRedirectUrlResponse;
 import com.eventorauth.oauth.dto.OauthTokenResponse;
 import com.eventorauth.oauth.dto.UserProfile;
 import com.eventorauth.oauth.repository.InMemoryOauthRepository;
@@ -63,11 +64,11 @@ public class OauthService {
 	@Value("${spring.security.oauth2.client.registration.kakao.admin-key}")
 	private String adminKey;
 
-	public String authentication(String registrationId) {
+	public OauthRedirectUrlResponse authentication(String registrationId) {
 		OauthProvider oauthClient = inMemoryProviderRepository.findByProviderName(registrationId);
 
 		// Redirect URL 생성
-		return buildRedirectUrl(registrationId, oauthClient);
+		return new OauthRedirectUrlResponse(buildRedirectUrl(registrationId, oauthClient));
 	}
 
 	private String buildRedirectUrl(String registrationId, OauthProvider oauthClient) {
@@ -158,7 +159,7 @@ public class OauthService {
 	}
 
 	public Boolean existsByOauth(OauthDto request) {
-		return userClient.existsByOauth(request).getBody();
+		return userClient.existsByOauth(request).getData();
 	}
 
 	public void oauthSignup(SignUpRequest request) {
@@ -166,7 +167,7 @@ public class OauthService {
 	}
 
 	public void oauthLogin(OauthDto request, HttpServletResponse response) throws IOException {
-		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request);
+		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getData();
 
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");

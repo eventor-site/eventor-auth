@@ -1,7 +1,6 @@
 package com.eventorauth.auth.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,29 +12,30 @@ import com.eventorauth.auth.dto.request.CheckNicknameRequest;
 import com.eventorauth.auth.dto.request.SignUpRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
 import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.global.dto.ApiResponse;
 import com.eventorauth.oauth.dto.OauthDto;
 
 @FeignClient(name = "user-client", url = "${feignClient.url}")
 public interface UserClient {
 
 	@GetMapping("/back/users/info")
-	GetUserTokenInfoResponse getUserTokenInfoByIdentifier(@RequestParam String identifier);
+	ApiResponse<GetUserTokenInfoResponse> getUserTokenInfoByIdentifier(@RequestParam String identifier);
 
 	@PostMapping("/back/users/oauth2/info")
-	GetUserTokenInfoResponse getUserTokenInfoByOauth(@RequestBody OauthDto request);
+	ApiResponse<GetUserTokenInfoResponse> getUserTokenInfoByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup")
-	ResponseEntity<Void> oauthSignup(@RequestBody SignUpRequest request);
+	ApiResponse<Void> oauthSignup(@RequestBody SignUpRequest request);
 
 	@PostMapping("/back/users/signup/checkIdentifier")
-	ResponseEntity<String> checkIdentifier(@RequestBody CheckIdentifierRequest request);
+	ApiResponse<Void> checkIdentifier(@RequestBody CheckIdentifierRequest request);
 
 	@PostMapping("/back/users/signup/oauth2/exists")
-	ResponseEntity<Boolean> existsByOauth(@RequestBody OauthDto request);
+	ApiResponse<Boolean> existsByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup/checkNickname")
-	ResponseEntity<String> checkNickname(@RequestBody CheckNicknameRequest request);
+	ApiResponse<Void> checkNickname(@RequestBody CheckNicknameRequest request);
 
 	@PutMapping("/back/users/me/lastLoginTime")
-	ResponseEntity<Void> updateLastLoginTime(UpdateLastLoginTimeRequest request);
+	ApiResponse<Void> updateLastLoginTime(UpdateLastLoginTimeRequest request);
 }

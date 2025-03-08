@@ -1,7 +1,5 @@
 package com.eventorauth.auth.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.eventorauth.auth.dto.ReissueTokenDto;
 import com.eventorauth.auth.service.AuthService;
+import com.eventorauth.global.dto.ApiResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +23,8 @@ public class AuthController {
 	 * 토큰 재발급
 	 */
 	@PostMapping("/reissue")
-	public ResponseEntity<ReissueTokenDto> reissueTokens(@RequestBody ReissueTokenDto request) {
-		return ResponseEntity.status(HttpStatus.OK).body(authService.reissueToken(request));
+	public ApiResponse<ReissueTokenDto> reissueTokens(@RequestBody ReissueTokenDto request) {
+		return ApiResponse.createSuccess(authService.reissueToken(request));
 	}
 
 }

@@ -26,6 +26,6 @@ public class UserController {
 
 	@PostMapping("/oauth2/signup/checkNickname")
 	public ResponseEntity<String> checkNickname(@ModelAttribute CheckNicknameRequest request) {
-		return userService.checkNickname(request);
+		return ResponseEntity.ok(userService.checkNickname(request));
 	}
 }
