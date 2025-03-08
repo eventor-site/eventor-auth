@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eventorauth.auth.dto.request.SignUpRequest;
@@ -24,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class OauthController {
 	private final OauthService oauthService;
 
+	@ResponseBody
 	@GetMapping("/oauth2/authorization/{registrationId}")
 	public ApiResponse<OauthRedirectUrlResponse> authentication(@PathVariable String registrationId) {
 		return ApiResponse.createSuccess(oauthService.authentication(registrationId));
