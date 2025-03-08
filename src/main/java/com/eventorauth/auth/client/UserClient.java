@@ -1,6 +1,7 @@
 package com.eventorauth.auth.client;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,23 +20,23 @@ import com.eventorauth.oauth.dto.OauthDto;
 public interface UserClient {
 
 	@GetMapping("/back/users/info")
-	ApiResponse<GetUserTokenInfoResponse> getUserTokenInfoByIdentifier(@RequestParam String identifier);
+	ResponseEntity<ApiResponse<GetUserTokenInfoResponse>> getUserTokenInfoByIdentifier(@RequestParam String identifier);
 
 	@PostMapping("/back/users/oauth2/info")
-	ApiResponse<GetUserTokenInfoResponse> getUserTokenInfoByOauth(@RequestBody OauthDto request);
+	ResponseEntity<ApiResponse<GetUserTokenInfoResponse>> getUserTokenInfoByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup")
-	ApiResponse<Void> oauthSignup(@RequestBody SignUpRequest request);
+	ResponseEntity<ApiResponse<Void>> oauthSignup(@RequestBody SignUpRequest request);
 
 	@PostMapping("/back/users/signup/checkIdentifier")
-	ApiResponse<Void> checkIdentifier(@RequestBody CheckIdentifierRequest request);
+	ResponseEntity<ApiResponse<Void>> checkIdentifier(@RequestBody CheckIdentifierRequest request);
 
 	@PostMapping("/back/users/signup/oauth2/exists")
-	ApiResponse<Boolean> existsByOauth(@RequestBody OauthDto request);
+	ResponseEntity<ApiResponse<Boolean>> existsByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup/checkNickname")
-	ApiResponse<Void> checkNickname(@RequestBody CheckNicknameRequest request);
+	ResponseEntity<ApiResponse<Void>> checkNickname(@RequestBody CheckNicknameRequest request);
 
 	@PutMapping("/back/users/me/lastLoginTime")
-	ApiResponse<Void> updateLastLoginTime(UpdateLastLoginTimeRequest request);
+	ResponseEntity<ApiResponse<Void>> updateLastLoginTime(UpdateLastLoginTimeRequest request);
 }

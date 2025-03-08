@@ -46,14 +46,14 @@ public class LogoutFilter extends GenericFilterBean {
 			return;
 		}
 
-		String refreshToken = request.getHeader("Refresh-Token");
+		String refreshToken = request.getHeader("refresh-token");
 		refreshTokenRepository.deleteById(refreshToken.replace("Bearer+", ""));
 
 		// access, refresh 토큰을 만료시킵니다.
-		Cookie cookie = cookieUtils.expireCookie("Access-Token");
+		Cookie cookie = cookieUtils.expireCookie("access-token");
 		response.addCookie(cookie);
 
-		cookie = cookieUtils.expireCookie("Refresh-Token");
+		cookie = cookieUtils.expireCookie("refresh-token");
 		response.addCookie(cookie);
 
 		response.setStatus(HttpServletResponse.SC_OK);

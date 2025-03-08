@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.eventorauth.auth.dto.request.CheckNicknameRequest;
 import com.eventorauth.auth.dto.request.SignUpRequest;
-import com.eventorauth.oauth.service.UserService;
+import com.eventorauth.oauth.service.impl.UserServiceImpl;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 public class UserController {
-	private final UserService userService;
+	private final UserServiceImpl userService;
 
 	@GetMapping("/oauth2/signup")
 	public String nickname(@ModelAttribute("request") SignUpRequest request, Model model) {
@@ -26,6 +26,6 @@ public class UserController {
 
 	@PostMapping("/oauth2/signup/checkNickname")
 	public ResponseEntity<String> checkNickname(@ModelAttribute CheckNicknameRequest request) {
-		return ResponseEntity.ok(userService.checkNickname(request));
+		return ResponseEntity.ok(userService.checkNickname(request).getMessage());
 	}
 }

@@ -1,18 +1,10 @@
 package com.eventorauth.oauth.service;
 
-import org.springframework.stereotype.Service;
-
-import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.request.CheckNicknameRequest;
+import com.eventorauth.global.dto.ApiResponse;
 
-import lombok.RequiredArgsConstructor;
+public interface UserService {
 
-@Service
-@RequiredArgsConstructor
-public class UserService {
-	private final UserClient userClient;
+	ApiResponse<Void> checkNickname(CheckNicknameRequest request);
 
-	public String checkNickname(CheckNicknameRequest request) {
-		return userClient.checkNickname(request).getMessage();
-	}
 }

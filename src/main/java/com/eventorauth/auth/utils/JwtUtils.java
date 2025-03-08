@@ -104,7 +104,7 @@ public class JwtUtils {
 	 * 새 JWT 토큰을 생성합니다.
 	 */
 	public String generateAccessToken(Long userId, List<String> roles, Long effectiveTime) {
-		String tokenTypePrefix = "Bearer ";
+		String tokenTypePrefix = "Bearer+";
 		return tokenTypePrefix + Jwts.builder()
 			.claim("token-type", "access")
 			.claim("userId", userId)
@@ -116,7 +116,7 @@ public class JwtUtils {
 	}
 
 	public String generateRefreshToken(Long effectiveTime) {
-		String tokenTypePrefix = "Bearer ";
+		String tokenTypePrefix = "Bearer+";
 		return tokenTypePrefix + Jwts.builder()
 			.claim("token-type", "refresh")
 			.issuedAt(new Date(System.currentTimeMillis()))

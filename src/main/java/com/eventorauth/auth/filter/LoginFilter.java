@@ -37,7 +37,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	private final JwtUtils jwtUtils;
 	private final Long accessTokenExpiresIn;
 	private final Long refreshTokenExpiresIn;
-	private final ObjectMapper objectMapper = new ObjectMapper();
+	private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 	private final RefreshTokenRepository refreshTokenRepository;
 	private final UserClient userClient;
 
@@ -89,8 +89,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		String accessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
 		String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
 
+		refreshTokenRepository.deleteByUserId(userId);
+
 		refreshTokenRepository.save(
-			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(refreshToken.replace("Bearer+", ""), userId, roles, refreshTokenExpiresIn));
 
 		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 
@@ -99,14 +101,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			.refreshToken(refreshToken)
 			.build();
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		objectMapper.registerModule(new JavaTimeModule()); // Registering the JavaTimeModule
-		String loginResponseJson = objectMapper.writeValueAsString(ApiResponse.createSuccess(loginResponse));
+		// TODO: ResponseEntity 객체로 반환하면 프론트 측에서 응답 객체가 null
+		String json = objectMapper.writeValueAsString(
+			new ApiResponse<>(HttpStatus.OK.name(), loginResponse, null));
 
 		response.setStatus(HttpStatus.OK.value());
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(loginResponseJson);
+		response.getWriter().write(json);
 	}
 
 	/**

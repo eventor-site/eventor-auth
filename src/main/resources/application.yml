@@ -11,7 +11,7 @@ spring:
   jwt:
     secret: ae2d34485b06523251b0cf111013481ef501749742a11b927f92eb7d9a048eec5fd22976673af2d7fd4fe93428d4f3301d60ad10164ffc3cea29743fe5906909
     access-token:
-      expires-in: 86400000
+      expires-in: 600000
     refresh-token:
       expires-in: 86400000
 

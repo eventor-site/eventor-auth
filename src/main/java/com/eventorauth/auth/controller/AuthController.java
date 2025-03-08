@@ -1,5 +1,6 @@
 package com.eventorauth.auth.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,7 @@ public class AuthController {
 	 * 토큰 재발급
 	 */
 	@PostMapping("/reissue")
-	public ApiResponse<ReissueTokenDto> reissueTokens(@RequestBody ReissueTokenDto request) {
+	public ResponseEntity<ApiResponse<ReissueTokenDto>> reissueTokens(@RequestBody ReissueTokenDto request) {
 		return ApiResponse.createSuccess(authService.reissueToken(request));
 	}
 
