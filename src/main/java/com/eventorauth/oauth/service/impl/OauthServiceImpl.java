@@ -195,9 +195,7 @@ public class OauthServiceImpl implements OauthService {
 		// 클라이언트로 리다이렉트 (토큰 포함)
 		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
-			redirectUrl,
-			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
-			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8));
+			redirectUrl, accessToken, refreshToken);
 		response.sendRedirect(urlWithTokens);
 	}
 
