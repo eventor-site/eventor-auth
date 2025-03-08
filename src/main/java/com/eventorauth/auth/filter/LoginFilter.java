@@ -19,6 +19,7 @@ import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
 import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
+import com.eventorauth.global.dto.ApiResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -100,7 +101,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.registerModule(new JavaTimeModule()); // Registering the JavaTimeModule
-		String loginResponseJson = objectMapper.writeValueAsString(loginResponse);
+		String loginResponseJson = objectMapper.writeValueAsString(ApiResponse.createSuccess(loginResponse));
 
 		response.setStatus(HttpStatus.OK.value());
 		response.setContentType("application/json");
