@@ -75,11 +75,12 @@ public class OauthServiceImpl implements OauthService {
 	private String buildRedirectUrl(String registrationId, OauthProvider oauthClient) {
 		if (registrationId.equals("google")) {
 			return String.format(
-				"%s?response_type=code&client_id=%s&redirect_uri=%s&scope=%s",
+				"%s?response_type=code&client_id=%s&redirect_uri=%s&scope=%s&state=%s",
 				oauthClient.getAuthorizationUri(),
 				oauthClient.getClientId(),
 				oauthClient.getRedirectUri(),
-				oauthClient.getScope());
+				oauthClient.getScope(),
+				UUID.randomUUID());
 		} else {
 			return String.format("%s?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
 				oauthClient.getAuthorizationUri(),
