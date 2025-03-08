@@ -185,6 +185,8 @@ public class OauthServiceImpl implements OauthService {
 		String accessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
 		String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
 
+		refreshTokenRepository.deleteByUserId(userId);
+
 		refreshTokenRepository.save(
 			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
