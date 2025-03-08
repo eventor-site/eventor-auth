@@ -69,7 +69,8 @@ public class OauthServiceImpl implements OauthService {
 		OauthProvider oauthClient = inMemoryProviderRepository.findByProviderName(registrationId);
 
 		// Redirect URL 생성
-		return buildRedirectUrl(registrationId, oauthClient);
+		String url = buildRedirectUrl(registrationId, oauthClient);
+		return String.format("redirect:%s", url);
 	}
 
 	private String buildRedirectUrl(String registrationId, OauthProvider oauthClient) {
