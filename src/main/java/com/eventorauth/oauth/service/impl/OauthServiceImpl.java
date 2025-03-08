@@ -79,7 +79,7 @@ public class OauthServiceImpl implements OauthService {
 				oauthClient.getAuthorizationUri(),
 				oauthClient.getClientId(),
 				oauthClient.getRedirectUri(),
-				oauthClient.getScope(),
+				URLEncoder.encode(oauthClient.getScope(), StandardCharsets.UTF_8),
 				UUID.randomUUID());
 		} else {
 			return String.format("%s?response_type=code&client_id=%s&state=%s&redirect_uri=%s",
