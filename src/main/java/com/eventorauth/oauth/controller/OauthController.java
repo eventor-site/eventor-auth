@@ -37,6 +37,7 @@ public class OauthController {
 
 		if (existsByOauth) {
 			oauthService.oauthLogin(oauthDto, response);
+			return null;
 		}
 
 		// 이메일로 회원 가입된 아이디가 없는 경우
