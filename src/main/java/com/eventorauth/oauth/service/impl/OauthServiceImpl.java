@@ -1,6 +1,5 @@
 package com.eventorauth.oauth.service.impl;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -168,7 +167,7 @@ public class OauthServiceImpl implements OauthService {
 		userClient.oauthSignup(request);
 	}
 
-	public void oauthLogin(OauthDto request, HttpServletResponse response) throws IOException {
+	public void oauthLogin(OauthDto request, HttpServletResponse response) {
 		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getBody().getData();
 
 		if (Objects.isNull(user)) {
@@ -196,8 +195,12 @@ public class OauthServiceImpl implements OauthService {
 		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
 			redirectUrl, accessToken, refreshToken);
-		response.sendRedirect(urlWithTokens);
-		return;
+		try {
+			response.sendRedirect(urlWithTokens);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 }

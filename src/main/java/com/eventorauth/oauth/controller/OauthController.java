@@ -1,7 +1,5 @@
 package com.eventorauth.oauth.controller;
 
-import java.io.IOException;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,7 +29,7 @@ public class OauthController {
 
 	@GetMapping("/oauth2/code/{registrationId}")
 	public String getToken(@PathVariable String registrationId, @RequestParam String code,
-		RedirectAttributes redirectAttributes, HttpServletResponse response) throws IOException {
+		RedirectAttributes redirectAttributes, HttpServletResponse response) {
 
 		SignUpRequest request = oauthService.getToken(registrationId, code);
 		OauthDto oauthDto = new OauthDto(request.oauthId(), request.oauthType());
@@ -50,7 +48,7 @@ public class OauthController {
 
 	@PostMapping("/oauth2/signup")
 	public void oauthLogin(@ModelAttribute SignUpRequest request,
-		HttpServletResponse response) throws IOException {
+		HttpServletResponse response) {
 		oauthService.oauthSignup(request);
 		oauthService.oauthLogin(new OauthDto(request.oauthId(), request.oauthType()), response);
 	}

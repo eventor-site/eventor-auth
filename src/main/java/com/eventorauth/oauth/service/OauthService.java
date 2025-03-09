@@ -1,6 +1,5 @@
 package com.eventorauth.oauth.service;
 
-import java.io.IOException;
 import java.util.Map;
 
 import com.eventorauth.auth.dto.request.SignUpRequest;
@@ -22,6 +21,6 @@ public interface OauthService {
 
 	void oauthSignup(SignUpRequest request);
 
-	void oauthLogin(OauthDto request, HttpServletResponse response) throws IOException;
+	void oauthLogin(OauthDto request, HttpServletResponse response);
 
 }
