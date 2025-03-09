@@ -201,8 +201,6 @@ public class OauthServiceImpl implements OauthService {
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
 			redirectUrl, accessToken, refreshToken);
 		response.sendRedirect(urlWithTokens);
-		log.info("리다이렉트 실행: " + urlWithTokens);
-		return;
 
 	}
 
