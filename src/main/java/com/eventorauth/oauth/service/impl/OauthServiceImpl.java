@@ -39,7 +39,9 @@ import com.eventorauth.oauth.service.OauthService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OauthServiceImpl implements OauthService {
@@ -199,6 +201,8 @@ public class OauthServiceImpl implements OauthService {
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
 			redirectUrl, accessToken, refreshToken);
 		response.sendRedirect(urlWithTokens);
+		log.info("리다이렉트 실행: " + urlWithTokens);
+		return;
 
 	}
 
