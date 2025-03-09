@@ -18,6 +18,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 
 import com.eventorauth.auth.client.UserClient;
+import com.eventorauth.auth.filter.CustomFilter;
 import com.eventorauth.auth.filter.LoginFilter;
 import com.eventorauth.auth.filter.LogoutFilter;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
@@ -57,6 +58,8 @@ public class SecurityConfig {
 					.requestMatchers("/**", "/js/**", "/css/**", "/images/**", "/favicon.ico").permitAll()
 				// .anyRequest().authenticated()
 			)
+
+			.addFilterBefore(new CustomFilter(), UsernamePasswordAuthenticationFilter.class)
 
 			//
 			// .oauth2Login((oauth2) -> oauth2
