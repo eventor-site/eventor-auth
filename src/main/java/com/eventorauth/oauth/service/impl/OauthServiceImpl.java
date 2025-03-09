@@ -192,14 +192,16 @@ public class OauthServiceImpl implements OauthService {
 		refreshTokenRepository.deleteByUserId(userId);
 
 		refreshTokenRepository.save(
-			new RefreshToken(refreshToken.replace("Bearer+", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
 		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 
 		// 클라이언트로 리다이렉트 (토큰 포함)
 		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
-			redirectUrl, accessToken, refreshToken);
+			redirectUrl,
+			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
+			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8));
 		response.sendRedirect(urlWithTokens);
 
 	}

@@ -56,7 +56,7 @@ public class AuthService {
 
 		// 새로 발급한 재발급 토큰 저장
 		refreshTokenRepository.save(
-			new RefreshToken(newRefreshToken.replace("Bearer+", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(newRefreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
 		return ReissueTokenDto.builder()
 			.accessToken(newAccessToken)

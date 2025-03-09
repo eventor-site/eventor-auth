@@ -92,7 +92,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		refreshTokenRepository.deleteByUserId(userId);
 
 		refreshTokenRepository.save(
-			new RefreshToken(refreshToken.replace("Bearer+", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
 		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 

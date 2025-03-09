@@ -40,13 +40,18 @@ public class LogoutFilter extends GenericFilterBean {
 		throws IOException, ServletException {
 		String requestUri = request.getRequestURI();
 		String requestMethod = request.getMethod();
+		String refreshToken = request.getHeader("refresh-token");
 
 		if (!requestUri.matches("/auth/logout") || !requestMethod.equals("POST")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
-		String refreshToken = request.getHeader("refresh-token");
+		if (refreshToken == null) {
+			response.setStatus(HttpServletResponse.SC_OK);
+			return;
+		}
+
 		refreshTokenRepository.deleteById(refreshToken.replace("Bearer+", ""));
 
 		// access, refresh 토큰을 만료시킵니다.
@@ -55,7 +60,7 @@ public class LogoutFilter extends GenericFilterBean {
 
 		cookie = cookieUtils.expireCookie("refresh-token");
 		response.addCookie(cookie);
-
 		response.setStatus(HttpServletResponse.SC_OK);
+
 	}
 }
