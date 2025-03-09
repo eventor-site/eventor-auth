@@ -38,6 +38,7 @@ import com.eventorauth.oauth.service.OauthService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +69,8 @@ public class OauthServiceImpl implements OauthService {
 		OauthProvider oauthClient = inMemoryProviderRepository.findByProviderName(registrationId);
 
 		// Redirect URL 생성
-		return buildRedirectUrl(registrationId, oauthClient);
+		String url = buildRedirectUrl(registrationId, oauthClient);
+		return String.format("redirect:%s", url);
 	}
 
 	private String buildRedirectUrl(String registrationId, OauthProvider oauthClient) {
@@ -167,6 +169,7 @@ public class OauthServiceImpl implements OauthService {
 		userClient.oauthSignup(request);
 	}
 
+	@SneakyThrows
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
 		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getBody().getData();
 
@@ -195,12 +198,7 @@ public class OauthServiceImpl implements OauthService {
 		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
 		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
 			redirectUrl, accessToken, refreshToken);
-		try {
-			response.sendRedirect(urlWithTokens);
-			return;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		response.sendRedirect(urlWithTokens);
 
 	}
 
