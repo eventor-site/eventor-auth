@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.eventorauth.auth.dto.request.SignUpRequest;
@@ -46,6 +47,7 @@ public class OauthController {
 		return "redirect:/oauth2/signup";
 	}
 
+	@ResponseBody
 	@PostMapping("/oauth2/signup")
 	public void oauthLogin(@ModelAttribute SignUpRequest request,
 		HttpServletResponse response) {
