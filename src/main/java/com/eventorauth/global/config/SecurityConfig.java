@@ -48,6 +48,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.csrf(AbstractHttpConfigurer::disable)
 			.formLogin(AbstractHttpConfigurer::disable)
 			.httpBasic(AbstractHttpConfigurer::disable)
@@ -81,8 +82,6 @@ public class SecurityConfig {
 			.addFilterBefore(new LogoutFilter(cookieUtils, refreshTokenRepository),
 				org.springframework.security.web.authentication.logout.LogoutFilter.class)
 			.userDetailsService(userDetailsService)
-
-			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 			.cors(corsCustomizer -> corsCustomizer.configurationSource(request -> {
 
