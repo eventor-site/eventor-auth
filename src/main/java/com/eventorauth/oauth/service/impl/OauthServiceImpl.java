@@ -197,6 +197,7 @@ public class OauthServiceImpl implements OauthService {
 			redirectUrl, accessToken, refreshToken);
 		try {
 			response.sendRedirect(urlWithTokens);
+			return;
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
