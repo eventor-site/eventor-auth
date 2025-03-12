@@ -6,6 +6,18 @@ on:
 
 jobs:
   build:
+    # 테스트용 환경 변수
+    env:
+      EUREKA_USERNAME: ${{ secrets.EUREKA_USERNAME }}
+      EUREKA_PASSWORD: ${{ secrets.EUREKA_PASSWORD }}
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+      GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+      NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+      NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+      KAKAO_CLIENT_ID: ${{ secrets.KAKAO_CLIENT_ID }}
+      KAKAO_ADMIN_KEY: ${{ secrets.KAKAO_ADMIN_KEY }}
+
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
@@ -40,7 +52,18 @@ jobs:
       # DockerHub Push
       - name: Build and Push Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/eventor-auth .  # 원하는 이름으로 로컬에서 태깅
+          docker build \
+          --build-arg EUREKA_USERNAME="${{secrets.EUREKA_USERNAME}}" \
+          --build-arg EUREKA_PASSWORD="${{secrets.EUREKA_PASSWORD}}" \
+          
+          --build-arg JWT_SECRET="${{secrets.JWT_SECRET}}" \
+          --build-arg GOOGLE_CLIENT_ID="${{secrets.GOOGLE_CLIENT_ID}}" \
+          --build-arg GOOGLE_CLIENT_SECRET="${{secrets.GOOGLE_CLIENT_SECRET}}" \
+          --build-arg NAVER_CLIENT_ID="${{secrets.NAVER_CLIENT_ID}}" \
+          --build-arg NAVER_CLIENT_SECRET="${{secrets.NAVER_CLIENT_SECRET}}" \
+          --build-arg KAKAO_CLIENT_ID="${{secrets.KAKAO_CLIENT_ID}}" \
+          --build-arg KAKAO_ADMIN_KEY="${{secrets.KAKAO_ADMIN_KEY}}" \
+          -t ${{ secrets.DOCKER_USERNAME }}/eventor-auth .  # 원하는 이름으로 로컬에서 태깅
           docker push ${{ secrets.DOCKER_USERNAME }}/eventor-auth 
 
   server:

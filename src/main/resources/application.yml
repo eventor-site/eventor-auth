@@ -9,7 +9,7 @@ spring:
     active: dev
 
   jwt:
-    secret: ae2d34485b06523251b0cf111013481ef501749742a11b927f92eb7d9a048eec5fd22976673af2d7fd4fe93428d4f3301d60ad10164ffc3cea29743fe5906909
+    secret: ${JWT_SECRET}
     access-token:
       expires-in: 600000
     refresh-token:
@@ -21,8 +21,8 @@ spring:
         registration:
           google:
             client-name: google
-            client-id: 14386311208-v95l6fic8p8r27nlfaeu88il5hq2jdbf.apps.googleusercontent.com
-            client-secret: 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
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: https://www.eventor.store/oauth2/code/google
             authorization-grant-type: authorization_code
             scope: email profile
@@ -30,19 +30,19 @@ spring:
 
           naver:
             client-name: naver
-            client-id: S2Sj8SX9Cr_9ZagO1Vvl
-            client-secret: RoHrflXuBz
+            client-id: ${NAVER_CLIENT_ID}
+            client-secret: ${NAVER_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             redirect-uri: https://www.eventor.store/oauth2/code/naver
             scope: name, email
 
           kakao:
             client-name: kakao
-            client-id: c0d10aff5c1c99bf736b2b156f363f1f
+            client-id: ${KAKAO_CLIENT_ID}
             redirect-uri: https://www.eventor.store/oauth2/code/kakao
             authorization-grant-type: authorization_code
             scope: profile_nickname, profile_image, account_email
-            admin-key: 27f796f39a9241c30fb31280ac9893f7
+            admin-key: ${KAKAO_ADMIN_KEY}
 
         provider:
           google:
