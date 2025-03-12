@@ -55,7 +55,6 @@ jobs:
           docker build \
           --build-arg EUREKA_USERNAME="${{secrets.EUREKA_USERNAME}}" \
           --build-arg EUREKA_PASSWORD="${{secrets.EUREKA_PASSWORD}}" \
-          
           --build-arg JWT_SECRET="${{secrets.JWT_SECRET}}" \
           --build-arg GOOGLE_CLIENT_ID="${{secrets.GOOGLE_CLIENT_ID}}" \
           --build-arg GOOGLE_CLIENT_SECRET="${{secrets.GOOGLE_CLIENT_SECRET}}" \
