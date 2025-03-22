@@ -214,7 +214,7 @@ public class OauthServiceImpl implements OauthService {
 			redirectUrl,
 			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
 			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8),
-			error);
+			URLEncoder.encode(error, StandardCharsets.UTF_8));
 	}
 
 }
