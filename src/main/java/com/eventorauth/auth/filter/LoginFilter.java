@@ -61,8 +61,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	 * 로그인 요청을 인증합니다.
 	 */
 	@Override
-	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
-		throws AuthenticationException {
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
 		LoginRequest loginRequest;
 		try {
 			loginRequest = objectMapper.readValue(request.getInputStream(), LoginRequest.class);
