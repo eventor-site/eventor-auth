@@ -12,6 +12,7 @@ import java.util.UUID;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.eventorauth.auth.client.UserClient;
@@ -23,6 +24,7 @@ import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 import com.eventorauth.global.dto.ApiResponse;
 import com.eventorauth.global.exception.ServerException;
+import com.eventorauth.global.exception.UnauthorizedException;
 import com.eventorauth.oauth.client.GoogleProfileClient;
 import com.eventorauth.oauth.client.GoogleTokenClient;
 import com.eventorauth.oauth.client.KakaoProfileClient;
@@ -173,30 +175,34 @@ public class OauthServiceImpl implements OauthService {
 
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
 		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getBody().getData();
-		String urlWithTokens;
 
 		if (Objects.isNull(user)) {
-			throw new ServerException("사용자 정보를 찾을 수 없습니다.");
+			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
 		}
 
 		if ("탈퇴".equals(user.statusName())) {
-			urlWithTokens = createRedirectUrl("null", "null", "탈퇴");
-		} else {
-			Long userId = user.userId();
-			List<String> roles = user.roles();
-
-			String accessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
-			String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
-
-			refreshTokenRepository.deleteByUserId(userId);
-
-			refreshTokenRepository.save(
-				new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
-
-			userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
-
-			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "");
+			throw new UnauthorizedException("탈퇴한 사용자입니다. 관리자에게 문의해 주세요.");
 		}
+
+		Long userId = user.userId();
+		List<String> roles = user.roles();
+
+		String accessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
+		String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
+
+		refreshTokenRepository.deleteByUserId(userId);
+
+		refreshTokenRepository.save(
+			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
+
+		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
+
+		// 클라이언트로 리다이렉트 (토큰 포함)
+		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
+		String urlWithTokens = String.format("%s?accessToken=%s&refreshToken=%s",
+			redirectUrl,
+			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
+			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8));
 
 		try {
 			response.sendRedirect(urlWithTokens);
@@ -204,17 +210,6 @@ public class OauthServiceImpl implements OauthService {
 			throw new ServerException();
 		}
 
-	}
-
-	public String createRedirectUrl(String accessToken, String refreshToken, String error) {
-		// 클라이언트로 리다이렉트 (토큰 포함)
-		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
-
-		return String.format("%s?accessToken=%s&refreshToken=%s&error=%s",
-			redirectUrl,
-			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
-			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8),
-			URLEncoder.encode(error, StandardCharsets.UTF_8));
 	}
 
 }
