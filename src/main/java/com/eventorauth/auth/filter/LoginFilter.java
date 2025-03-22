@@ -2,20 +2,20 @@ package com.eventorauth.auth.filter;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.eventorauth.auth.client.UserClient;
+import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.LoginRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
+import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
@@ -84,22 +84,23 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException {
-		Long userId = Long.parseLong(authentication.getName());
-		List<String> roles = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+		AppCustomUserDetails appCustomUserDetails = (AppCustomUserDetails)authentication.getPrincipal();
+		GetUserTokenInfoResponse user = appCustomUserDetails.getUser();
 
-		String accessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
+		String accessToken = jwtUtils.generateAccessToken(user.userId(), user.roles(), accessTokenExpiresIn);
 		String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
 
-		refreshTokenRepository.deleteByUserId(userId);
+		refreshTokenRepository.deleteByUserId(user.userId());
 
 		refreshTokenRepository.save(
-			new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(refreshToken.replace("Bearer ", ""), user.userId(), user.roles(), refreshTokenExpiresIn));
 
-		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
+		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(user.userId(), LocalDateTime.now()));
 
 		LoginResponse loginResponse = LoginResponse.builder()
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
+			.userStatusName(user.statusName())
 			.build();
 
 		// TODO: ResponseEntity 객체로 반환하면 프론트 측에서 응답 객체가 null

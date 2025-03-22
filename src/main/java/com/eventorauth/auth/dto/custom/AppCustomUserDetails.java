@@ -16,6 +16,10 @@ import lombok.RequiredArgsConstructor;
 public class AppCustomUserDetails implements UserDetails {
 	private final GetUserTokenInfoResponse user;
 
+	public GetUserTokenInfoResponse getUser() {
+		return user;
+	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
