@@ -1,5 +1,6 @@
 package com.eventorauth.oauth.service.impl;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
@@ -22,6 +23,8 @@ import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 import com.eventorauth.global.dto.ApiResponse;
+import com.eventorauth.global.exception.ServerException;
+import com.eventorauth.global.exception.UnauthorizedException;
 import com.eventorauth.oauth.client.GoogleProfileClient;
 import com.eventorauth.oauth.client.GoogleTokenClient;
 import com.eventorauth.oauth.client.KakaoProfileClient;
@@ -38,7 +41,6 @@ import com.eventorauth.oauth.service.OauthService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -171,7 +173,6 @@ public class OauthServiceImpl implements OauthService {
 		userClient.oauthSignup(request);
 	}
 
-	@SneakyThrows
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
 		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getBody().getData();
 
@@ -180,7 +181,7 @@ public class OauthServiceImpl implements OauthService {
 		}
 
 		if ("탈퇴".equals(user.statusName())) {
-			throw new UsernameNotFoundException("탈퇴한 사용자입니다.");
+			throw new UnauthorizedException("탈퇴한 사용자입니다. 관리자에게 문의해 주세요.");
 		}
 
 		Long userId = user.userId();
@@ -202,7 +203,12 @@ public class OauthServiceImpl implements OauthService {
 			redirectUrl,
 			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
 			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8));
-		response.sendRedirect(urlWithTokens);
+
+		try {
+			response.sendRedirect(urlWithTokens);
+		} catch (IOException e) {
+			throw new ServerException();
+		}
 
 	}
 

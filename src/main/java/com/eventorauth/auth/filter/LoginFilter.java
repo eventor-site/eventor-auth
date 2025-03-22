@@ -20,6 +20,7 @@ import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 import com.eventorauth.global.dto.ApiResponse;
+import com.eventorauth.global.exception.UserWithdrawAuthenticationException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -117,10 +118,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 		AuthenticationException failed) throws IOException {
+		String errorMessage;
+
+		if (failed.getCause() instanceof UserWithdrawAuthenticationException) {
+			errorMessage = "{\"message\": \"" + failed.getMessage() + "\"}";
+		} else {
+			errorMessage = "{\"message\": \"인증에 실패 했습니다.\"}";
+		}
+
 		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		String errorMessage = "{\"message\": \"인증 실패\"}";
 		response.getWriter().write(errorMessage);
 	}
 }

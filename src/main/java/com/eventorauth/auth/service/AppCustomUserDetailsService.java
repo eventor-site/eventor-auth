@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
 import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.global.exception.UserWithdrawAuthenticationException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,7 +36,7 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 		}
 
 		if ("탈퇴".equals(user.statusName())) {
-			throw new UsernameNotFoundException("탈퇴한 사용자입니다.");
+			throw new UserWithdrawAuthenticationException("탈퇴한 사용자입니다. 관리자에게 문의해 주세요.");
 		}
 
 		return new AppCustomUserDetails(user);
