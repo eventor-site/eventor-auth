@@ -180,7 +180,7 @@ public class OauthServiceImpl implements OauthService {
 		}
 
 		if ("탈퇴".equals(user.statusName())) {
-			urlWithTokens = createRedirectUrl("", "", "탈퇴");
+			urlWithTokens = createRedirectUrl("null", "null", "탈퇴");
 		} else {
 			Long userId = user.userId();
 			List<String> roles = user.roles();
@@ -195,7 +195,7 @@ public class OauthServiceImpl implements OauthService {
 
 			userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 
-			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "탈퇴");
+			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "");
 		}
 
 		try {
@@ -215,7 +215,6 @@ public class OauthServiceImpl implements OauthService {
 			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
 			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8),
 			error);
-
 	}
 
 }
