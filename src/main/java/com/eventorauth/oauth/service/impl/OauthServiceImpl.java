@@ -7,12 +7,10 @@ import java.time.LocalDateTime;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.eventorauth.auth.client.UserClient;
@@ -173,15 +171,11 @@ public class OauthServiceImpl implements OauthService {
 	}
 
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
-		GetUserOauth user = userClient.getAuthInfoByOauth(request).getBody().getData();
+		GetUserOauth user = userClient.getOauthInfoByOauth(request).getBody().getData();
 		String urlWithTokens;
 
-		if (Objects.isNull(user)) {
-			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
-		}
-		String oauthId = user.oauthId() != null ? user.oauthId() : "null";
 		if ("탈퇴".equals(user.statusName()) || "휴면".equals(user.statusName())) {
-			urlWithTokens = createRedirectUrl("null", "null", oauthId, user.statusName());
+			urlWithTokens = createRedirectUrl("null", "null", user.oauthId(), user.statusName());
 		} else {
 			Long userId = user.userId();
 			List<String> roles = user.roles();

@@ -24,7 +24,7 @@ public interface UserClient {
 	ResponseEntity<ApiResponse<GetUserAuth>> getAuthInfoByIdentifier(@RequestParam String identifier);
 
 	@PostMapping("/back/users/oauth2/info")
-	ResponseEntity<ApiResponse<GetUserOauth>> getAuthInfoByOauth(@RequestBody OauthDto request);
+	ResponseEntity<ApiResponse<GetUserOauth>> getOauthInfoByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup")
 	ResponseEntity<ApiResponse<Void>> oauthSignup(@RequestBody SignUpRequest request);
