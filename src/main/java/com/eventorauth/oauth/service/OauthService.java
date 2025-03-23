@@ -23,6 +23,6 @@ public interface OauthService {
 
 	void oauthLogin(OauthDto request, HttpServletResponse response);
 
-	String createRedirectUrl(String accessToken, String refreshToken, String error);
+	String createRedirectUrl(String accessToken, String refreshToken, String oauthId, String error);
 
 }

@@ -15,7 +15,7 @@ import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.LoginRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
-import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.dto.response.GetUserAuth;
 import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
@@ -84,7 +84,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authentication) throws IOException {
 		AppCustomUserDetails appCustomUserDetails = (AppCustomUserDetails)authentication.getPrincipal();
-		GetUserTokenInfoResponse user = appCustomUserDetails.getUser();
+		GetUserAuth user = appCustomUserDetails.getUser();
 
 		String accessToken = jwtUtils.generateAccessToken(user.userId(), user.roles(), accessTokenExpiresIn);
 		String refreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);

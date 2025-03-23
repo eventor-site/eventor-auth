@@ -19,7 +19,7 @@ import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.SignUpRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
-import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.dto.response.GetUserOauth;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
 import com.eventorauth.global.dto.ApiResponse;
@@ -173,7 +173,7 @@ public class OauthServiceImpl implements OauthService {
 	}
 
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
-		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByOauth(request).getBody().getData();
+		GetUserOauth user = userClient.getAuthInfoByOauth(request).getBody().getData();
 		String urlWithTokens;
 
 		if (Objects.isNull(user)) {
@@ -181,7 +181,7 @@ public class OauthServiceImpl implements OauthService {
 		}
 
 		if ("탈퇴".equals(user.statusName()) || "휴면".equals(user.statusName())) {
-			urlWithTokens = createRedirectUrl("null", "null", user.statusName());
+			urlWithTokens = createRedirectUrl("null", "null", user.oauthId(), user.statusName());
 		} else {
 			Long userId = user.userId();
 			List<String> roles = user.roles();
@@ -196,7 +196,7 @@ public class OauthServiceImpl implements OauthService {
 
 			userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
 
-			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "");
+			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "", "");
 		}
 
 		try {
@@ -207,14 +207,15 @@ public class OauthServiceImpl implements OauthService {
 
 	}
 
-	public String createRedirectUrl(String accessToken, String refreshToken, String error) {
+	public String createRedirectUrl(String accessToken, String refreshToken, String oauthId, String error) {
 		// 클라이언트로 리다이렉트 (토큰 포함)
 		String redirectUrl = "https://www.eventor.store/auth/oauth2/login";
 
-		return String.format("%s?accessToken=%s&refreshToken=%s&error=%s",
+		return String.format("%s?accessToken=%s&refreshToken=%s&oauthId=%s&error=%s",
 			redirectUrl,
 			URLEncoder.encode(accessToken, StandardCharsets.UTF_8),
 			URLEncoder.encode(refreshToken, StandardCharsets.UTF_8),
+			URLEncoder.encode(oauthId, StandardCharsets.UTF_8),
 			URLEncoder.encode(error, StandardCharsets.UTF_8));
 	}
 

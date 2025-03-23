@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
-import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.dto.response.GetUserAuth;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,7 +28,7 @@ public class AppCustomUserDetailsService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-		GetUserTokenInfoResponse user = userClient.getUserTokenInfoByIdentifier(identifier).getBody().getData();
+		GetUserAuth user = userClient.getAuthInfoByIdentifier(identifier).getBody().getData();
 
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");

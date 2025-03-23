@@ -8,15 +8,15 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.dto.response.GetUserAuth;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class AppCustomUserDetails implements UserDetails {
-	private final GetUserTokenInfoResponse user;
+	private final GetUserAuth user;
 
-	public GetUserTokenInfoResponse getUser() {
+	public GetUserAuth getUser() {
 		return user;
 	}
 

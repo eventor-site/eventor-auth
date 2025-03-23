@@ -12,18 +12,19 @@ import com.eventorauth.auth.dto.request.CheckIdentifierRequest;
 import com.eventorauth.auth.dto.request.CheckNicknameRequest;
 import com.eventorauth.auth.dto.request.SignUpRequest;
 import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
-import com.eventorauth.auth.dto.response.GetUserTokenInfoResponse;
+import com.eventorauth.auth.dto.response.GetUserAuth;
+import com.eventorauth.auth.dto.response.GetUserOauth;
 import com.eventorauth.global.dto.ApiResponse;
 import com.eventorauth.oauth.dto.OauthDto;
 
 @FeignClient(name = "user-client", url = "${feignClient.url}")
 public interface UserClient {
 
-	@GetMapping("/back/users/info")
-	ResponseEntity<ApiResponse<GetUserTokenInfoResponse>> getUserTokenInfoByIdentifier(@RequestParam String identifier);
+	@GetMapping("/back/users/auth/info")
+	ResponseEntity<ApiResponse<GetUserAuth>> getAuthInfoByIdentifier(@RequestParam String identifier);
 
 	@PostMapping("/back/users/oauth2/info")
-	ResponseEntity<ApiResponse<GetUserTokenInfoResponse>> getUserTokenInfoByOauth(@RequestBody OauthDto request);
+	ResponseEntity<ApiResponse<GetUserOauth>> getAuthInfoByOauth(@RequestBody OauthDto request);
 
 	@PostMapping("/back/users/signup")
 	ResponseEntity<ApiResponse<Void>> oauthSignup(@RequestBody SignUpRequest request);

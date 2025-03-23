@@ -5,7 +5,7 @@ import java.util.List;
 import lombok.Builder;
 
 @Builder
-public record GetUserTokenInfoResponse(
+public record GetUserAuth(
 	Long userId,
 	String identifier,
 	String password,
