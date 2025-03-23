@@ -179,9 +179,9 @@ public class OauthServiceImpl implements OauthService {
 		if (Objects.isNull(user)) {
 			throw new UsernameNotFoundException("사용자 정보를 찾을 수 없습니다.");
 		}
-
+		String oauthId = user.oauthId() != null ? user.oauthId() : "null";
 		if ("탈퇴".equals(user.statusName()) || "휴면".equals(user.statusName())) {
-			urlWithTokens = createRedirectUrl("null", "null", user.oauthId(), user.statusName());
+			urlWithTokens = createRedirectUrl("null", "null", oauthId, user.statusName());
 		} else {
 			Long userId = user.userId();
 			List<String> roles = user.roles();
