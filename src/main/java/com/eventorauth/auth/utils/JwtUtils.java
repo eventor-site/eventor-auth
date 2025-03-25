@@ -13,10 +13,7 @@ import org.springframework.stereotype.Component;
 import com.eventorauth.auth.exception.TokenValidationException;
 
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -74,30 +71,11 @@ public class JwtUtils {
 	 * JWT 토큰의 유효성을 검증합니다.
 	 */
 	public void validateToken(String token) {
-		String errorMessage = null;
 		try {
 			Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token.replace("Bearer+", ""));
-		} catch (SecurityException | MalformedJwtException e) {
-			errorMessage = "유효하지 않은 토큰입니다.";
-			log.info(errorMessage, e);
-		} catch (ExpiredJwtException e) {
-			errorMessage = "만료된 토큰입니다.";
-			log.info(errorMessage, e);
-		} catch (UnsupportedJwtException e) {
-			errorMessage = "지원하지 않는 토큰입니다.";
-			log.info(errorMessage, e);
-		} catch (IllegalArgumentException e) {
-			errorMessage = "토큰 값이 비어있습니다.";
-			log.info(errorMessage, e);
+		} catch (Exception e) {
+			throw new TokenValidationException();
 		}
-
-		if (!getTokenTypeFromToken(token).equals("refresh")) {
-			errorMessage = "Refresh 토큰이 아닙니다.";
-		}
-		if (errorMessage != null) {
-			throw new TokenValidationException(errorMessage);
-		}
-
 	}
 
 	/**

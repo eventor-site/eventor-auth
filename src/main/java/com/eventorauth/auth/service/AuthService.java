@@ -47,16 +47,17 @@ public class AuthService {
 			RefreshTokenNotFoundException::new);
 		Long userId = refreshToken.getUserId();
 		List<String> roles = refreshToken.getRoles();
+		Long remainingTtl = refreshToken.getExpirationTime() * 1000;
 
 		String newAccessToken = jwtUtils.generateAccessToken(userId, roles, accessTokenExpiresIn);
-		String newRefreshToken = jwtUtils.generateRefreshToken(refreshTokenExpiresIn);
+		String newRefreshToken = jwtUtils.generateRefreshToken(remainingTtl);
 
 		// 기존 재발급 토큰 삭제
 		refreshTokenRepository.deleteById(request.refreshToken());
 
 		// 새로 발급한 재발급 토큰 저장
 		refreshTokenRepository.save(
-			new RefreshToken(newRefreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
+			new RefreshToken(newRefreshToken.replace("Bearer ", ""), userId, roles, remainingTtl));
 
 		return ReissueTokenDto.builder()
 			.accessToken(newAccessToken)

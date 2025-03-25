@@ -101,8 +101,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 			.refreshToken(refreshToken)
 			.userStatusName(user.statusName())
 			.build();
-
-		// TODO: ResponseEntity 객체로 반환하면 프론트 측에서 응답 객체가 null
+		
 		String json = objectMapper.writeValueAsString(
 			new ApiResponse<>(HttpStatus.OK.name(), loginResponse, null));
 
