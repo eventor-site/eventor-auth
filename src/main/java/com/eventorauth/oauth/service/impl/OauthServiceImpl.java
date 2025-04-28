@@ -171,7 +171,7 @@ public class OauthServiceImpl implements OauthService {
 	}
 
 	public void oauthLogin(OauthDto request, HttpServletResponse response) {
-		GetUserOauth user = userClient.getOauthInfoByOauth(request).getBody().getData();
+		GetUserOauth user = userClient.getOAuthInfoByOauth(request).getBody().getData();
 		String urlWithTokens;
 
 		if ("탈퇴".equals(user.statusName()) || "휴면".equals(user.statusName())) {
