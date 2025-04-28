@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.eventorauth.auth.dto.request.CheckIdentifierRequest;
 import com.eventorauth.auth.dto.request.CheckNicknameRequest;
 import com.eventorauth.auth.dto.request.SignUpRequest;
-import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
+import com.eventorauth.auth.dto.request.UpdateLoginAtRequest;
 import com.eventorauth.auth.dto.response.GetUserAuth;
 import com.eventorauth.auth.dto.response.GetUserOauth;
 import com.eventorauth.global.dto.ApiResponse;
@@ -38,6 +38,6 @@ public interface UserClient {
 	@PostMapping("/back/users/signup/checkNickname")
 	ResponseEntity<ApiResponse<Void>> checkNickname(@RequestBody CheckNicknameRequest request);
 
-	@PutMapping("/back/users/me/lastLoginTime")
-	ResponseEntity<ApiResponse<Void>> updateLastLoginTime(UpdateLastLoginTimeRequest request);
+	@PutMapping("/back/users/me/loginAt")
+	ResponseEntity<ApiResponse<Void>> updateLoginAt(UpdateLoginAtRequest request);
 }

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.SignUpRequest;
-import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
+import com.eventorauth.auth.dto.request.UpdateLoginAtRequest;
 import com.eventorauth.auth.dto.response.GetUserOauth;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
 import com.eventorauth.auth.utils.JwtUtils;
@@ -188,7 +188,7 @@ public class OauthServiceImpl implements OauthService {
 			refreshTokenRepository.save(
 				new RefreshToken(refreshToken.replace("Bearer ", ""), userId, roles, refreshTokenExpiresIn));
 
-			userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(userId, LocalDateTime.now()));
+			userClient.updateLoginAt(new UpdateLoginAtRequest(userId, LocalDateTime.now()));
 
 			urlWithTokens = createRedirectUrl(accessToken, refreshToken, "", "");
 		}

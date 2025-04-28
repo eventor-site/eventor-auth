@@ -14,7 +14,7 @@ import com.eventorauth.auth.client.UserClient;
 import com.eventorauth.auth.dto.custom.AppCustomUserDetails;
 import com.eventorauth.auth.dto.entity.RefreshToken;
 import com.eventorauth.auth.dto.request.LoginRequest;
-import com.eventorauth.auth.dto.request.UpdateLastLoginTimeRequest;
+import com.eventorauth.auth.dto.request.UpdateLoginAtRequest;
 import com.eventorauth.auth.dto.response.GetUserAuth;
 import com.eventorauth.auth.dto.response.LoginResponse;
 import com.eventorauth.auth.repository.RefreshTokenRepository;
@@ -94,14 +94,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 		refreshTokenRepository.save(
 			new RefreshToken(refreshToken.replace("Bearer ", ""), user.userId(), user.roles(), refreshTokenExpiresIn));
 
-		userClient.updateLastLoginTime(new UpdateLastLoginTimeRequest(user.userId(), LocalDateTime.now()));
+		userClient.updateLoginAt(new UpdateLoginAtRequest(user.userId(), LocalDateTime.now()));
 
 		LoginResponse loginResponse = LoginResponse.builder()
 			.accessToken(accessToken)
 			.refreshToken(refreshToken)
 			.userStatusName(user.statusName())
 			.build();
-		
+
 		String json = objectMapper.writeValueAsString(
 			new ApiResponse<>(HttpStatus.OK.name(), loginResponse, null));
 
