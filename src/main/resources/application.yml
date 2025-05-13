@@ -76,3 +76,4 @@ logging:
     com.netflix.discovery: ERROR
     com.netflix.eureka: ERROR
 
+# 비밀번호 변경
