@@ -3,10 +3,6 @@ spring:
   thymeleaf:
     cache: true
 
-  data:
-    redis:
-      host: redis
-
 eureka:
   client:
     service-url:

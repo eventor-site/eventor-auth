@@ -10,6 +10,7 @@ spring:
 
   data:
     redis:
+      host: localhost
       password: ${REDIS_PASSWORD}
 
   jwt:

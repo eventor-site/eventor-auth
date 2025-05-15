@@ -3,10 +3,6 @@ spring:
   thymeleaf:
     cache: false
 
-  data:
-    redis:
-      host: localhost
-
 #logging:
 #  level:
 #    org.springframework.security: DEBUG
