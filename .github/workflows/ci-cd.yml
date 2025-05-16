@@ -34,6 +34,11 @@ jobs:
           mvn install
         shell: bash
 
+      - name: Set up Docker Compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
+
       # DockerHub 로그인
       - name: Login to DockerHub
         uses: docker/login-action@v1
