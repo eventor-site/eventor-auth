@@ -44,8 +44,7 @@ jobs:
       # DockerHub Push
       - name: Build and Push Docker image
         run: |
-          docker build
-          -t ${{ secrets.DOCKER_USERNAME }}/eventor-auth .  # 원하는 이름으로 로컬에서 태깅
+          docker build -t ${{ secrets.DOCKER_USERNAME }}/eventor-auth .  # 원하는 이름으로 로컬에서 태깅
           docker push ${{ secrets.DOCKER_USERNAME }}/eventor-auth 
 
   server:
