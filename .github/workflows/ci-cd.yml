@@ -27,8 +27,12 @@ jobs:
       - name: Clean with Maven
         run: mvn clean
 
-      - name: Install with Maven
-        run: mvn install
+      - name: Load .env and Install with Maven
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+          export $(grep -v '^#' .env | xargs)
+          mvn install
+        shell: bash
 
       # DockerHub 로그인
       - name: Login to DockerHub
