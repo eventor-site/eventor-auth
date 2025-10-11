@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           source: ".env"
-          target: "/home/eventor"
+          target: "/home/ubuntu/eventor"
 
       - name: Deploy to Server
         uses: appleboy/ssh-action@master
@@ -78,7 +78,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            cd eventor-auth
+            cd eventor/eventor-auth
             sudo docker-compose stop eventor-auth
             sudo docker-compose rm -f
             sudo docker rmi dlrudgjs104/eventor-auth:latest
