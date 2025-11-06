@@ -43,7 +43,7 @@
 // 		String token = jwtUtil.createJwt(username, role, 60 * 60 * 60L);
 //
 // 		response.addCookie(createCookie("Authorization", token));
-// 		response.sendRedirect("https://www.eventor.store/main");
+// 		response.sendRedirect("https://www.eventor.kr/main");
 // 	}
 //
 // 	private Cookie createCookie(String key, String value) {
